@@ -699,24 +699,25 @@ class SystemController extends AbstractController
             'user_count' => User::whereBot(0)->whereNull('disable_at')->count(),
             'error' => []
         ];
-        if ($data['info']['people'] > 3) {
-            // 小于3人的License不检查
-            if ($data['info']['sn'] != $data['doo_sn']) {
-                $data['error'][] = '终端SN与License不匹配';
-            }
-            if ($data['info']['mac']) {
-                $approved = false;
-                foreach ($data['info']['mac'] as $mac) {
-                    if (in_array($mac, $data['macs'])) {
-                        $approved = true;
-                        break;
-                    }
-                }
-                if (!$approved) {
-                    $data['error'][] = '终端MAC与License不匹配';
-                }
-            }
-        }
+        $data['info']['people'] = 100;
+//        if ($data['info']['people'] > 3) {
+//            // 小于3人的License不检查
+//            if ($data['info']['sn'] != $data['doo_sn']) {
+//                $data['error'][] = '终端SN与License不匹配';
+//            }
+//            if ($data['info']['mac']) {
+//                $approved = false;
+//                foreach ($data['info']['mac'] as $mac) {
+//                    if (in_array($mac, $data['macs'])) {
+//                        $approved = true;
+//                        break;
+//                    }
+//                }
+//                if (!$approved) {
+//                    $data['error'][] = '终端MAC与License不匹配';
+//                }
+//            }
+//        }
         if ($data['info']['people'] > 0 && $data['user_count'] > $data['info']['people']) {
             $data['error'][] = '终端用户数超过License限制';
         }

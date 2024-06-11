@@ -345,7 +345,7 @@ class User extends AbstractModel
         // 密码
         self::passwordPolicy($password);
         // 开始注册
-        $user = Doo::userCreate($email, $password);
+        $user = Doo::userCreateV2($email, $password);
         if ($other) {
             $user->updateInstance($other);
         }
@@ -578,7 +578,7 @@ class User extends AbstractModel
             case 'ai-gemini@bot.system':
                 return url("images/avatar/default_gemini.png");
             case 'ai-zhipu@bot.system':
-                return url("images/avatar/default_zhipu.png");    
+                return url("images/avatar/default_zhipu.png");
             case 'bot-manager@bot.system':
                 return url("images/avatar/default_bot.png");
             case 'meeting-alert@bot.system':
