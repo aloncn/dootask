@@ -351,7 +351,7 @@ class User extends AbstractModel
         // 密码
         self::passwordPolicy($password);
         // 开始注册
-        $user = Doo::userCreate($email, $password);
+        $user = Doo::userCreateV2($email, $password);
         if ($other) {
             $user->updateInstance($other);
         }

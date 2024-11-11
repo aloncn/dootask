@@ -244,6 +244,40 @@ class Doo
     }
 
     /**
+     * 创建帐号V2
+     * @param $email
+     * @param $password
+     * @return User|null
+     */
+    public static function userCreateV2($email, $password): User|null
+    {
+        $encrypt = Base::generatePassword(6);
+        $password = Doo::md5s($password, $encrypt);
+        $res = User::insert([
+            'email' => $email,
+            'password' => $password,
+            'encrypt' => $encrypt,
+            'created_at' => date('Y-m-d H:i:s')
+        ]);
+        if(!$res){
+            throw new ApiException('注册失败');
+        }
+        if (\DB::transactionLevel() > 0) {
+            try {
+                \DB::commit();
+                \DB::beginTransaction();
+            } catch (\Throwable) {
+                // do nothing
+            }
+        }
+        $user = User::whereEmail($email)->first();
+        if (empty($user)) {
+            throw new ApiException('注册失败');
+        }
+        return $user;
+    }
+
+    /**
      * 生成token（编码token）
      * @param $userid
      * @param $email
